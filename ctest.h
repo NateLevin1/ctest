@@ -21,8 +21,11 @@
  *         RETURNS_INT(func, expected_return_int, (...arguments));
  *         RETURNS_STR(func, expected_return_str, (...arguments));
  *         ASSERT(boolean_expression);
+ *         ASSERT_EQ(a, b);
  *         MODIFIES_STR_ARR(func, expected_str_arr, modified_str_arr, (...arguments));
  *     }
+ *
+ *     END_TESTING();
  * }
  *
  * NOTE: If your function modifies a string instead of returning a char*,
