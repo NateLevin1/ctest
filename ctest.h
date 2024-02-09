@@ -11,7 +11,7 @@
  *     C Test: A simple, macro-based testing framework for C
  *
  * Created by Nate Levin (@NateLevin1 on GitHub)
- * Last Updated: 2023-01-23
+ * Last Updated: 2023-02-09
  *
  * Example Usage:
  * int main() {
