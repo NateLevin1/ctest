@@ -134,12 +134,30 @@ static bool cur_test_failed = false;
     }; \
     }
 
+#define ASSERT_NOT_EQ(a, b) \
+    { \
+    if(a != b) {\
+        __PASS("%s != %s", #a, #b); \
+    } else { \
+        __FAIL("%s == %s\033[0m", #a, #b); \
+    }; \
+    }
+
 #define ASSERT_STR_EQ(a, b) \
     { \
     if(strcmp(a, b) == 0) {\
         __PASS("%s == %s", #a, #b); \
     } else {\
         __FAIL("%s != %s (\"%s\" != \"%s\")\033[0m", #a, #b, a, b); \
+    }; \
+    }
+
+#define ASSERT_STR_NOT_EQ(a, b) \
+    { \
+    if(strcmp(a, b) != 0) {\
+        __PASS("%s != %s", #a, #b); \
+    } else {\
+        __FAIL("%s == %s (\"%s\" == \"%s\")\033[0m", #a, #b, a, b); \
     }; \
     }
 
