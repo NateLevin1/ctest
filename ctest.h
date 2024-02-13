@@ -130,7 +130,7 @@ static bool cur_test_failed = false;
     if(a == b) {\
         __PASS("%s == %s", #a, #b); \
     } else { \
-        __FAIL("%s != %s\033[0m", #a, #b); \
+        __FAIL("%s != %s", #a, #b); \
     }; \
     }
 
@@ -139,7 +139,7 @@ static bool cur_test_failed = false;
     if(a != b) {\
         __PASS("%s != %s", #a, #b); \
     } else { \
-        __FAIL("%s == %s\033[0m", #a, #b); \
+        __FAIL("%s == %s", #a, #b); \
     }; \
     }
 
@@ -148,7 +148,7 @@ static bool cur_test_failed = false;
     if(strcmp(a, b) == 0) {\
         __PASS("%s == %s", #a, #b); \
     } else {\
-        __FAIL("%s != %s (\"%s\" != \"%s\")\033[0m", #a, #b, a, b); \
+        __FAIL("%s != %s (\"%s\" != \"%s\")", #a, #b, a, b); \
     }; \
     }
 
@@ -157,7 +157,7 @@ static bool cur_test_failed = false;
     if(strcmp(a, b) != 0) {\
         __PASS("%s != %s", #a, #b); \
     } else {\
-        __FAIL("%s == %s (\"%s\" == \"%s\")\033[0m", #a, #b, a, b); \
+        __FAIL("%s == %s (\"%s\" == \"%s\")", #a, #b, a, b); \
     }; \
     }
 

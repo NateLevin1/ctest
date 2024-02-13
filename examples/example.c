@@ -32,7 +32,9 @@ int main() {
     }
 
     TEST("1 is 1") {
-        ASSERT_EQ(1, 1);
+        int a = 1;
+        int b = 1;
+        ASSERT_EQ(a, b);
     }
 
     TEST("false is true") {
