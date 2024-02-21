@@ -11,14 +11,14 @@
  *     C Test: A simple, macro-based testing framework for C
  *
  * Created by Nate Levin (@NateLevin1 on GitHub)
- * Last Updated: 2023-02-09
+ * Last Updated: 2023-02-20
  *
  * Example Usage:
  * int main() {
  *     BEGIN_TESTING("filename.h");
  *
  *     TEST("describe what the test is testing") {
- *         RETURNS_INT(func, expected_return_int, (...arguments));
+ *         RETURNS(func, expected_return, (...arguments));
  *         RETURNS_STR(func, expected_return_str, (...arguments));
  *         ASSERT(boolean_expression);
  *         ASSERT_EQ(a, b);
@@ -30,10 +30,11 @@
  *
  * NOTE: If your function modifies a string instead of returning a char*,
  *       use MODIFIES_STR instead of RETURNS_STR. For example:
- *       MODIFIES_STR(func, expected_str, modified_str, (...arguments)); // use when func modifies the string, instead of returning char*
+ *       MODIFIES_STR(func, expected_str, modified_str, (...arguments));
  *
 */
 
+#pragma once
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
@@ -72,6 +73,51 @@ static bool cur_test_failed = false;
     printf("\n\033[34m-\033[0m %s\n", description); \
     __HANDLE_TEST_FAILURES(); \
     num_tests++;
+
+// from: https://dev.to/pauljlucas/generic-in-c-i48
+#define __PRINTF_FORMAT(T)        \
+  _Generic( (T),                  \
+    _Bool             : "%d",     \
+    char              : "'%c'",   \
+    signed char       : "%hhd",   \
+    unsigned char     : "%hhu",   \
+    short             : "%hd",    \
+    int               : "%d",     \
+    long              : "%ld",    \
+    long long         : "%lld",   \
+    unsigned short    : "%hu",    \
+    unsigned int      : "%u",     \
+    unsigned long     : "%lu",    \
+    unsigned long long: "%llu",   \
+    float             : "%f",     \
+    double            : "%f",     \
+    long double       : "%Lf",    \
+    char*             : "\"%s\"", \
+    char const*       : "\"%s\"", \
+    void*             : "%p",     \
+    void const*       : "%p",     \
+    default           : "%p"      \
+  )
+
+#define RETURNS(func, expected, arguments) \
+    { \
+    _Pragma("GCC diagnostic push") \
+    _Pragma("GCC diagnostic ignored \"-Wint-conversion\"") \
+    _Pragma("GCC diagnostic ignored \"-Wpointer-integer-compare\"") \
+    _Pragma("GCC diagnostic ignored \"-Wformat\"") \
+    void* result = func arguments; \
+    if(result == expected) {\
+        __PASS("%s%s = %s", #func, #arguments, #expected); \
+    } else { \
+        __FAIL("%s%s != %s", #func, #arguments, #expected); \
+        printf("  ↳ expected \033[33m"); \
+        printf(__PRINTF_FORMAT(expected), expected); \
+        printf("\033[0m but got \033[31m"); \
+        printf(__PRINTF_FORMAT(expected), result); \
+        printf("\033[0m\n"); \
+    }; \
+    _Pragma("GCC diagnostic pop") \
+    }
 
 #define RETURNS_INT(func, expected, arguments) \
     { \
@@ -131,6 +177,11 @@ static bool cur_test_failed = false;
         __PASS("%s == %s", #a, #b); \
     } else { \
         __FAIL("%s != %s", #a, #b); \
+        printf("  ↳ expected \033[33m"); \
+        printf(__PRINTF_FORMAT(a), a); \
+        printf("\033[0m but got \033[31m"); \
+        printf(__PRINTF_FORMAT(b), b); \
+        printf("\033[0m\n"); \
     }; \
     }
 
@@ -140,6 +191,9 @@ static bool cur_test_failed = false;
         __PASS("%s != %s", #a, #b); \
     } else { \
         __FAIL("%s == %s", #a, #b); \
+        printf("  ↳ got \033[33m"); \
+        printf(__PRINTF_FORMAT(a), a); \
+        printf("\033[0m\n"); \
     }; \
     }
 

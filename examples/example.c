@@ -8,9 +8,9 @@ int main() {
     BEGIN_TESTING("example.c");
 
     TEST("sum adds two numbers") {
-        RETURNS_INT(sum, 1, (1, 0));
-        RETURNS_INT(sum, 5, (2, 3));
-        RETURNS_INT(sum, -2, (-6, 4));
+        RETURNS(sum, 1, (1, 0));
+        RETURNS(sum, 5, (2, 3));
+        RETURNS(sum, -2, (-6, 4));
     }
 
     TEST("reverse reverses a string") {
@@ -37,10 +37,10 @@ int main() {
         ASSERT_EQ(a, b);
     }
 
-    TEST("false is true") {
-        ASSERT_EQ(false, true);
-        ASSERT(false);
-    }
+    // TEST("false is true") {
+    //     ASSERT_EQ(false, true);
+    //     ASSERT(false);
+    // }
 
     END_TESTING();
 }
