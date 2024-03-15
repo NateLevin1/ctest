@@ -54,6 +54,10 @@ static bool cur_test_failed = false;
 #define __FAIL(...) \
     printf("\033[31m✗ Failed:\033[0m "); \
     printf(__VA_ARGS__); \
+    printf(" \033[90m("); \
+    printf(__FILE__); \
+    printf(":%d", __LINE__); \
+    printf(")\033[0m"); \
     printf("\n"); \
     cur_test_failed = true;
 
@@ -177,9 +181,9 @@ static bool cur_test_failed = false;
         __PASS("%s == %s", #a, #b); \
     } else { \
         __FAIL("%s != %s", #a, #b); \
-        printf("  ↳ expected \033[33m"); \
+        printf("  ↳ got \033[33m"); \
         printf(__PRINTF_FORMAT(a), a); \
-        printf("\033[0m but got \033[31m"); \
+        printf("\033[0m but expected \033[31m"); \
         printf(__PRINTF_FORMAT(b), b); \
         printf("\033[0m\n"); \
     }; \
